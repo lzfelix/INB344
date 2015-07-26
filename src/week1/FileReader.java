@@ -35,6 +35,7 @@ public class FileReader {
 	 */
 	public void computeFolderStatistics(String folderPath, boolean allowNumbers, String extensions[]) throws IOException {
 		File folder = new File(folderPath);
+		amountOfFiles = 0;
 		
 		for (File file : folder.listFiles()) {
 			if (file.isFile()) {				
@@ -95,8 +96,6 @@ public class FileReader {
 				else
 					table.put(word, 1);
 			}
-			
-			amountOfFiles = 1;
 		}
 	}
 	
@@ -129,6 +128,7 @@ public class FileReader {
 	}
 	
 	/**
+	 * Call this function only iff <code>computeFolderStatistics</code> was called previously.
 	 * @return Returns the amount of files that were read on the last parsing.
 	 */
 	public int getAmountOfFiles() {
