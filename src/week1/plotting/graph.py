@@ -1,7 +1,7 @@
 import string
 import matplotlib.pyplot as plt
 
-f = open("../stats.txt")
+f = open("../../../stats.txt")
 frequency = []
 probability = []
 
@@ -15,6 +15,7 @@ for line in f:
 
 # y = f(x) -> prob = f(freq)
 plt.plot(frequency, probability, linestyle='---', marker='o', color='r')
+# plt.scatter(frequency, probability)
 plt.gca().invert_xaxis()
 plt.ylabel("Probability")
 plt.xlabel("Frequency")
