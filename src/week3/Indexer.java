@@ -5,19 +5,32 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.BitSet;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
+/**
+ * This class indexes all files in a given folder under the assumption that they are all text files.
+ * To avoid the indexing of a file, its name has to begin with '.'. The class doesn't store a secondary
+ * index to keep track of the names of the files, but this can be easily implemented. (It is not done
+ * because the corpus's files are all numerically identified).
+ *
+ * 
+ * @author Luiz Felix
+ */
 public class Indexer {
-	private Map<String, BitSet> invertedIndex;
+	/* To match the corpus's file names */
 	private final int INITIAL_ID_COUNTER = 1;
-	
 	private int docId;
 	
+	private Map<String, BitSet> invertedIndex;
+	
+	/**
+	 * Indexes all files from a given folder that are not hidden. 
+	 * <pre>All the files on this folder must be text otherwise must be hidden.</pre>
+	 * 
+	 * @param path The path to the folder to be indexed.
+	 * @throws IOException If an IO fault occurs.
+	 */
 	public Indexer(String path) throws IOException {
 		invertedIndex = new HashMap<String, BitSet>();
 		docId = INITIAL_ID_COUNTER;
@@ -51,9 +64,17 @@ public class Indexer {
 		});
 	}
 	
+	/**
+	 * Returns a list with the ID of the documents that contains the term <code>word</code>.
+	 * This method is case insensitive.
+	 * @param word The word to be searched on all files.
+	 * @return A String with the ID of each matched document. If none is found, <code>null</code>
+	 * is returned.
+	 * @throws IndexerException if the query is an empty string or <code>null</code>.
+	 */
 	public String simpleQuery(String word) throws IndexerException {
-		word = word.toLowerCase();
-		if (word.length() == 0)
+		word = isInvalidString(word);
+		if (word == null)
 			throw new IndexerException("Invalid empty query.");
 
 		if (invertedIndex.containsKey(word))
@@ -61,11 +82,21 @@ public class Indexer {
 		return null;
 	}
 	
-	public String andQuery(String[] words) {
+	/**
+	 * Returns a list with the ID of all the documents that contains all the terms on <code>words</code>.
+	 * @param words The words to be queried.
+	 * @return A String with the ID of each matched document. If none is found, <code>null</code>
+	 * is returned.
+	 * @throws IndexerException if any element of the query is an empty string or <code>null</code>. 
+	 */
+	public String andQuery(String[] words) throws IndexerException {
 		BitSet result = null;
 		
 		for (int i = 0; i < words.length; i++) {
-			words[i] = words[i].toLowerCase();
+			
+			words[i] = isInvalidString(words[i]);
+			if (words[i] == null)
+				throw new IndexerException("The term number " + i + " is invalid.");
 			
 			// 0 (AND) X = 0; X = anything
 			if (!invertedIndex.containsKey(words[i])) {
@@ -80,31 +111,94 @@ public class Indexer {
 			}
 		}
 		
-		if (result == null) return null;
+		if (result == null || result.cardinality() == 0) return null;
 		
 		return result.toString();
 	}
 	
-	public String orQuery(String[] words) {
+	/**
+	 * Returns a list with the ID of all the documents that contains at least one term on <code>words</code>.
+	 * @param words The words to be queried.
+	 * @return A String with the ID of each matched document. If none is found, <code>null</code>
+	 * is returned.
+	 * @throws IndexerException if any element of the query is an empty string or <code>null</code>. 
+	 */
+	public String orQuery(String[] words) throws IndexerException {
 		BitSet result = null;
 		
 		for (int i = 0; i < words.length; i++) {
-			words[i] = words[i].toLowerCase();
+			words[i] = isInvalidString(words[i]);
+			if (words[i] == null)
+				throw new IndexerException("The term number " + i + " is invalid.");
 			
 			// 0 (OR) X = X; X = anything
 			if (invertedIndex.containsKey(words[i])) {
 				if (result == null)
 					result = (BitSet) invertedIndex.get(words[i]).clone();
 				else
-					result.and(invertedIndex.get(words[i]));
+					result.or(invertedIndex.get(words[i]));
 			}
 		}
 		
-		if (result == null) return null;
+		if (result == null || result.cardinality() == 0) return null;
 		
 		return result.toString();
 	}
 	
+	/**
+	 * Returns a list with the ID of all the documents that match ONLY the first element on <code>words</code>.
+	 * @param words The words to be queried.
+	 * @return A String with the ID of each matched document. If none is found, <code>null</code>
+	 * is returned.
+	 * @throws IndexerException if any element of the query is an empty string or <code>null</code>. 
+	 */
+	public String notQuery(String[] words) throws IndexerException {
+		if (words.length < 2)
+			throw new IndexerException("At least two terms must be queried");
+		
+		words[0] = isInvalidString(words[0]);
+		if (words[0] == null)
+			throw new IndexerException("The first term of the query is invalid.");
+			
+		BitSet toReturn = (BitSet) invertedIndex.get(words[0]).clone();
+		if (toReturn == null) return null;
+		
+		for (int i = 1; i < words.length; i++) {
+			words[i] = isInvalidString(words[i]);
+			if (words[i] == null)
+				throw new IndexerException("The term number " + i + " is invalid.");
+			
+			if (!invertedIndex.containsKey(words[i]))
+				continue;
+			
+			//finds ~B
+			BitSet currentSearch = (BitSet) invertedIndex.get(words[i]).clone();
+			currentSearch.flip(0, currentSearch.size());
+			
+			//computes A & ~B
+			toReturn.and(currentSearch);
+		}
+		
+		// complying with Javadoc
+		if (toReturn.cardinality() == 0) return null;
+		return toReturn.toString();
+	}
+	
+	/*
+	 * Internal method that lowecases a word and removes all its spaces (?). If the string is invalid, returns null
+	 */
+	private String isInvalidString(String s) {
+		if (s == null) return s;
+		
+		s = (s.replace("\\s", "")).toLowerCase();
+		if (s.isEmpty()) return null;
+		
+		return s;
+	}
+	
+	/*
+	 * Overwriting toString for debug purposes 
+	 */
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 		

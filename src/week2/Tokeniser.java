@@ -71,6 +71,7 @@ public class Tokeniser {
 	 * <post>If <code>outputFolder</code> doesn't exist, it is created during this function execution.</post> 
 	 * @param corpusPath The path to the corpus location.
 	 * @param outputFolder The path, including the folder name, to the directory that will hold the annotated files.
+	 * @param allowNumbers If <code>true</code> numbers won't be removed from the files.
 	 * @throws IOException If there is an IO fault.
 	 * @throws ClassCastException NER thrown exception.
 	 * @throws ClassNotFoundException NER thrown exception.
