@@ -1,0 +1,31 @@
+This file contains some ideas, maybe to be implemented on this week's indexer 
+about how to process the query.
+
+The original specification states that the user can input queries such as "term1", 
+"term1 AND term2", "term1 OR term2", "term1 NOT term2". Note that the NOT operator 
+is syntactic sugar for AND NOT.
+
+To allow the user to input more powerful query strings, this implementation uses
+an alternative query syntax, that permits the user to query for multiple terms, 
+but with the tradeoff of using just one logical expression with the following
+syntax:
+
+<Logical operator> Term1, Term2, .. TermN
+
+Observe that when the operator is NOT, Term1 is the one that must appear and all
+the other the ones shall not. 
+
+Despite of being a bit more powerful, this syntax limits the kind of expressions.
+To overcome this problem, two solutions arise. 
+
+The first solution assumes that the user will input only trivial logical expressions,
+without parenthesing them. In this case, the expression "Term1 AND Term2 NOT Term3
+OR Term4" is valid, while "Term1 AND (Term2 OR Term3)" is not. In this scenario, 
+the expressions can be evaluated by computing the first logical operation, eg. in the
+previous valid case, "Term1 AND Term2", replacing its result on the original expression,
+yielding "Result1 NOT Term3 OR Term4". This process is then repeated until all the
+query is parsed.
+
+The second solution allows the use of nested expressions, but for that a more
+powerful parser is needed. A solution would be performing the evaluation recursively,
+but maybe providing the parser with an DeMorgan's Laws analyser may be useful.

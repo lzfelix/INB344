@@ -3,6 +3,7 @@ package week3;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +19,44 @@ import java.util.Map.Entry;
  * @author Luiz Felix
  */
 public class Indexer {
+	
 	/* To match the corpus's file names */
 	private final int INITIAL_ID_COUNTER = 1;
 	private int docId;
 	
 	private Map<String, BitSet> invertedIndex;
+	
+	private static String readFile(Path textFilePath, boolean allowNumbers) throws IOException {
+		String regex = (allowNumbers) ? "[[^\\w ][_]]" : "[[^\\w ][\\d_]]";
+		StringBuilder buffer = new StringBuilder();
+		
+		Files.readAllLines(textFilePath).forEach(line -> {
+			//get rid of tabs
+			line = line.replaceAll("\t", " ");
+			
+			//get rid of more than 1 whitespace and HTML tags
+			line = line.trim().replaceAll("\\s{2,}", " ").replaceAll("<.*>", "");
+			
+			if (line.length() > 0) {
+				//removing all non-alphabetic characters and multiple spaces
+				line = line.replaceAll(regex, "");
+				
+				String[] words = line.split(" ");
+				
+				for (int i = 0; i < words.length; i++) {
+					if (words[i].length() == 0) continue;
+				
+					//uncomment this to normalise all the words to lower case (NER may fail) 
+					words[i] = words[i].toLowerCase();
+					buffer.append(words[i]);
+					
+					buffer.append("\n");	
+				}
+			}
+		});
+		
+		return buffer.toString();
+	}
 	
 	/**
 	 * Indexes all files from a given folder that are not hidden. 
@@ -43,7 +77,7 @@ public class Indexer {
 			
 			// fail silently
 			try {
-				purgedFile = week2.Tokeniser.purgeFile(filePath, false);
+				purgedFile = readFile(filePath, false);
 			} catch (Exception e) {
 				System.err.println("Error while indexing file " + filePath);
 			}
