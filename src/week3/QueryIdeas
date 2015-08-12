@@ -28,4 +28,4 @@ query is parsed.
 
 The second solution allows the use of nested expressions, but for that a more
 powerful parser is needed. A solution would be performing the evaluation recursively,
-but maybe providing the parser with an DeMorgan's Laws analyser may be useful.
+but maybe providing the parser with an DeMorgan's Laws analyser may be useful. 
