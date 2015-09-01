@@ -8,3 +8,4 @@ The obtained results (index and performance assessment) are on the zip file `res
 divided according to the pipeline used on indexing. Files ending with `_retrieved` contain the
 list of files retrieved using the privded queries and files ended with `_evaluation` corresponds
 to the trec\_eval report.
+
