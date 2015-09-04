@@ -1,6 +1,6 @@
 # Terrier variables: http://terrier.org/docs/v3.6/properties.html
 #run this script on the root folder of Terrier
-#(01-09-2015) Search Engine Technilogy @ QUT 2nd Semester
+#(01-09-2015) Search Engine Technology @ QUT 2nd Semester
 
 #||==========================||
 #|| Variables                ||
@@ -49,15 +49,15 @@ mkdir $outputFolder
 
 # creates one folder for each pipeline option and builds the index
 
-modes=('PorterStemmer' 'Stopwords' 'PorterStemmerStopwords' '')
+modes=('PorterStemmer' 'Stopwords' 'PorterStemmer,Stopwords' '')
 folders=('porter' 'stop' 'stopNporter' 'nofilter')
 len=${#folders[@]}      # this finds the size of the previous arrays
 #
-for ((i=0; i<$len; i++));
-do
-    mkdir -p $outputFolder/${folders[i]}/index
-    ./bin/trec_terrier.sh -i -Dterrier.index.path=$outputFolder/${folders[i]}/index -Dtermpipelines=${modes[i]}
-done
+# for ((i=0; i<$len; i++));
+# do
+#     mkdir -p $outputFolder/${folders[i]}/index
+#     ./bin/trec_terrier.sh -i -Dterrier.index.path=$outputFolder/${folders[i]}/index -Dtermpipelines=${modes[i]}
+# done
 
 
 #||==========================||
@@ -79,7 +79,8 @@ do
     for ((j=0; j<$len; j++));
     do
         ./bin/trec_terrier.sh -r -Dtrec.results.file=$outputFolder/${folders[i]}/queries/${filenames[j]}.txt \
-        -Dtermpipelines=PorterStemmer -Dterrier.index.prefix=data -Dtrec.topics=$queryFile -Dtrec.model=${modes[j]}
+        -Dterrier.index.path=$outputFolder/${folders[i]}/index -Dtermpipelines=PorterStemmer \
+        -Dterrier.index.prefix=data -Dtrec.topics=$queryFile -Dtrec.model=${modes[j]}
     done
 done
 
@@ -93,10 +94,11 @@ done
 #iterating over folders
 for ((i=0; i<$len; i++))
 do
+    path=$outputFolder/${folders[i]}/queries
+
     #iterating over results file using different weighting methods
     for ((j=0; j<$len; j++))
     do
-        path=$outputFolder/${folders[i]}/queries
         $trecEvalBinary $relevanceFile $path/${filenames[j]}'.txt' > $path/${filenames[j]}'_evaluation.txt'
     done
 done
