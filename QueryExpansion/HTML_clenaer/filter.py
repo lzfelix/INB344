@@ -1,6 +1,14 @@
+# Dependencies:
+# Python 2.x
+# beautifulsoup4
+# lxlm
+# (All available though pip)
+
 from bs4 import BeautifulSoup as bs
 from os import listdir, getcwd
 from os.path import join, isfile
+
+import sys
 
 def clean(input_file, output_file):
     """
@@ -46,9 +54,13 @@ def clean(input_file, output_file):
 
 
 if __name__ == "__main__":
+
+    if len(sys.argv) == 1:
+        print 'Usage: filter.py <corpus_collection_path> <cleaned_collection_destination_path>'
+        sys.exit(2)
     # I/O paths. Change here
-    path = getcwd()
-    out_path = "/Users/luiz/Desktop/soupOut"
+    path = sys.argv[1]
+    out_path = sys.argv[2]
 
     # counting files on the folder for progress measure
     total = len([name for name in listdir('.') if isfile(name)])
@@ -59,7 +71,13 @@ if __name__ == "__main__":
 
         # This is a >WEAK< way to check extension, since this is a controlled environment,
         # I can ensure that it's going to work without resorting to external libs
-        extension = file.split(".", 1)[1]
+        splitted_extension = file.split(".", 1)
+
+        if len(splitted_extension) < 2:
+            print("Skipped file %d -> it had no extension (A folder maybe?)." % (count))
+            continue
+
+        extension = splitted_extension[1]
         if extension != "html":
             print("Skipped file %d -> it was .%s" % (count, extension))
             continue
