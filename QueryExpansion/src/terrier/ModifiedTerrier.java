@@ -43,7 +43,7 @@ public class ModifiedTerrier {
 	
 	private static boolean __DEBUG_TRANSLATION_CATALOG = true;
 	
-	private static String QUERIES_PATH = "queries.txt";
+	private static String QUERIES_PATH = "tools/queries.txt";
 	
 	private Index index;
 	
@@ -332,7 +332,7 @@ public class ModifiedTerrier {
 		DJM languageModel = DJM.getInstance();
 		
 		try {
-			languageModel.performQueries("output.txt", terrier.queries, terrier.index);
+			languageModel.performQueries("tools/output.txt", terrier.queries, terrier.index);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

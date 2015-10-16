@@ -3,6 +3,7 @@ package terrier;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,8 +37,8 @@ public class DJM {
 	private PorterStemmer porterStemmer;
 	private Stopwords stopwords;
 	
-	private int mu = 7000;
-	private double lambda = 0.8;
+	private int mu = 5000;
+	private double lambda = 0.2;
 	private int amountOfRetrievedDocuments = 1000;
 	
 	/* Private constructor for a singleton class */
@@ -57,7 +58,6 @@ public class DJM {
 		return instance;
 	}
 	
-	//ask Guido: stopwords / porter stemmer on the queries?
 	
 	/**
 	 * Perform a query on the corpus using the DJM method.
@@ -80,10 +80,12 @@ public class DJM {
 		// the scoring array
 		double[] logP_d_q = new double[D];
 		
+//		Arrays.fill(logP_d_q, 1);
+		
 		// preparing the query by removing repeated terms
 		Set<String> preparedQuery = new HashSet<>();
 		
-		// add non-stopped stemmed words only
+		// add stemmed words only
 		for (String q : query.split(" ")) {
 			if (this.stopwords.isStopword(q)) continue;
 			
@@ -110,7 +112,8 @@ public class DJM {
 				int docId = postingsList.getId();
 				int docLen = postingsList.getDocumentLength();
 				
-				double c_w_d = postingsList.getFrequency() / (double)postingsList.getDocumentLength();
+				double c_w_d = postingsList.getFrequency();
+//				double c_w_d = postingsList.getFrequency() / (double)postingsList.getDocumentLength();
 				
 				double dirichlet = (c_w_d + this.mu * p_w_c) / (double)(docLen + this.mu);
 				
@@ -118,14 +121,38 @@ public class DJM {
 				double formulaResult = (1 - this.lambda) * dirichlet + (this.lambda * p_w_c);
 				
 				// ask Guido about adding the LOG. Using - to boost the score up
-				logP_d_q[docId] += formulaResult;
+				logP_d_q[docId] -= Math.log(formulaResult);
 			}
+		}	
+		
+		double max = 0;
+		for (int i = 0; i < logP_d_q.length; i++) {
+			if (logP_d_q[i] > max)
+				max = logP_d_q[i];
 		}
 		
-		// storing the results on Terrier format and ordering document scoring
+		
+//		for (int i = 0; i < logP_d_q.length; i++) {
+//			if (1 == logP_d_q[i])
+//				logP_d_q[i] = 0;
+//		}
+		
+		for (int i = 0; i < logP_d_q.length; i++) {
+			if (logP_d_q[i] > 1e-5)
+				logP_d_q[i] = (max - logP_d_q[i]) * 10;
+			else
+				logP_d_q[i] = 0;
+		}
+		
+//		 storing the results on Terrier format and ordering document scoring
 		ResultSet resultSet = new CollectionResultSet(statistics.getNumberOfDocuments());
 		resultSet.initialise(logP_d_q);
 		resultSet.sort();
+		
+//		for (int i = 0; i < 20; i++)
+//			System.out.println(logP_d_q[i] + " ");
+//	
+//		System.exit(0);
 		
 		// storing data to generate the output file on the trec_eval format
 		Request request = new Request();
