@@ -6,8 +6,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.poi.hpsf.UnexpectedPropertySetTypeException;
 import org.terrier.matching.models.DirichletLM;
@@ -27,7 +29,7 @@ import com.google.common.collect.TreeMultimap;
 
 public class ModifiedTerrier {
 	private static String TERRIER_HOME = "/Users/luiz/Desktop/SET_A/terrier";
-	private static String INDEX_PATH = "/Users/luiz/Desktop/SET_A/terrier/corpus/TREC_indexSP";
+	private static String INDEX_PATH = "/Users/luiz/Desktop/SET/terrier-4.0/processing/newIndex";
 	private static String STD_INDEX_ALIAS = "data";
 	
 	private static double INITIAL_SCORE = -1000;
@@ -41,10 +43,12 @@ public class ModifiedTerrier {
 	
 	private static boolean __DEBUG_TRANSLATION_CATALOG = true;
 	
-	private static String QUERIES_PATH = "/Users/luiz/Desktop/SET_A/terrier/corpus/TREC_queries/queries.txt";
+	private static String QUERIES_PATH = "queries.txt";
 	
 	private Index index;
-	private HashMap<String, String> queries;
+	
+	// can be improved
+	private LinkedHashMap<String, String> queries;
 	
 	/**
 	 * Installs terrier.home variable on the environment and load index file. 
@@ -70,7 +74,7 @@ public class ModifiedTerrier {
 		BufferedReader queryBuffer = new BufferedReader(new FileReader(queryPath));
 		String newLine;
 		
-		queries = new HashMap<>();
+		queries = new LinkedHashMap<String, String>();
 		
 		while ((newLine = queryBuffer.readLine()) != null) {
 			//file ending line problem bypassing
@@ -318,12 +322,22 @@ public class ModifiedTerrier {
 		
 		try {
 			terrier.readQueries(QUERIES_PATH);
-			System.out.println(terrier.getTranslations("knife", 100));
+//			System.out.println(terrier.getTranslations("knife", 100));
 		}
 		catch (IOException e) {
 			System.out.println("Error while reading the queries: " + e.getMessage());
 			e.printStackTrace();
 		}
+		
+		DJM languageModel = DJM.getInstance();
+		
+		try {
+			languageModel.performQueries("output.txt", terrier.queries, terrier.index);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		System.out.println("x");
 	}
