@@ -27,7 +27,11 @@ def clean(input_file, output_file):
     soup = bs(file, "lxml")
     file.close()
 
-    title = soup.title.string
+    try:
+        title = soup.title.string.encode("UTF-8")
+    except:
+        title = ""
+
 
     # removing all target tags and its contents
     [tag.decompose() for tag in soup(targets)]
@@ -63,15 +67,15 @@ if __name__ == "__main__":
     out_path = sys.argv[2]
 
     # counting files on the folder for progress measure
-    total = len([name for name in listdir('.') if isfile(name)])
+    total = len([name for name in listdir(path) if isfile(name)])
 
-    count = 0
     for file in listdir(path):
         count += 1
 
         # This is a >WEAK< way to check extension, since this is a controlled environment,
         # I can ensure that it's going to work without resorting to external libs
-        splitted_extension = file.split(".", 1)
+        extension_separator = file.rfind('.')
+        splitted_extension = [file[:extension_separator - 1], file[extension_separator + 1:]]
 
         if len(splitted_extension) < 2:
             print("Skipped file %d -> it had no extension (A folder maybe?)." % (count))
@@ -82,7 +86,11 @@ if __name__ == "__main__":
             print("Skipped file %d -> it was .%s" % (count, extension))
             continue
 
-        print "Cleaning file %d of %d" % (count, total)
+        # print "Cleaning file %d of %d" % (count, total)
+        #
+
+        if count % 100 == 0
+            print('Cleaned files %d to %d' % (count - 100, count))
 
         # Doing the dirty job...
         input_path = join(path, file)
