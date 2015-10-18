@@ -68,31 +68,44 @@ if __name__ == "__main__":
 
     # counting files on the folder for progress measure
     total = len([name for name in listdir(path) if isfile(name)])
+    faulty_files = []
 
     for file in listdir(path):
         count += 1
 
-        # This is a >WEAK< way to check extension, since this is a controlled environment,
-        # I can ensure that it's going to work without resorting to external libs
-        extension_separator = file.rfind('.')
-        splitted_extension = [file[:extension_separator - 1], file[extension_separator + 1:]]
+        try:
+            # This is a >WEAK< way to check extension, since this is a controlled environment,
+            # I can ensure that it's going to work without resorting to external libs
+            extension_separator = file.rfind('.')
+            splitted_extension = [file[:extension_separator - 1], file[extension_separator + 1:]]
 
-        if len(splitted_extension) < 2:
-            print("Skipped file %d -> it had no extension (A folder maybe?)." % (count))
-            continue
+            if len(splitted_extension) < 2:
+                print("Skipped file %d -> it had no extension (A folder maybe?)." % (count))
+                continue
 
-        extension = splitted_extension[1]
-        if extension != "html":
-            print("Skipped file %d -> it was .%s" % (count, extension))
-            continue
+            extension = splitted_extension[1]
+            if extension != "html":
+                print("Skipped file %d -> it was .%s" % (count, extension))
+                continue
 
-        # print "Cleaning file %d of %d" % (count, total)
-        #
+            # print "Cleaning file %d of %d" % (count, total)
+            #
 
-        if count % 100 == 0
-            print('Cleaned files %d to %d' % (count - 100, count))
+            if count % 100 == 0
+                print('Cleaned files %d to %d' % (count - 100, count))
 
-        # Doing the dirty job...
-        input_path = join(path, file)
-        output_path = join(out_path, file)
-        clean(input_path, output_path)
+            # Doing the dirty job...
+            input_path = join(path, file)
+            output_path = join(out_path, file)
+            clean(input_path, output_path)
+
+        except:
+            print '>> FATAL: File %d thrown a BS exception. This file ID is going to be logged.' % count
+            faulty_files.append(count)
+
+
+    print('Operation finished. %d files were parsed' % count)
+    print('List of faulty files: ')
+    for ffile in faulty_files:
+        print ffile,
+    print('\n')
