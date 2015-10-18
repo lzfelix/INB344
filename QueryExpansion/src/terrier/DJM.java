@@ -37,8 +37,8 @@ public class DJM {
 	private PorterStemmer porterStemmer;
 	private Stopwords stopwords;
 	
-	private int mu = 5000;
-	private double lambda = 0.2;
+	private double mu = 230274;
+	private double lambda = 0.5;
 	private int amountOfRetrievedDocuments = 1000;
 	
 	/* Private constructor for a singleton class */
@@ -149,11 +149,6 @@ public class DJM {
 		resultSet.initialise(logP_d_q);
 		resultSet.sort();
 		
-//		for (int i = 0; i < 20; i++)
-//			System.out.println(logP_d_q[i] + " ");
-//	
-//		System.exit(0);
-		
 		// storing data to generate the output file on the trec_eval format
 		Request request = new Request();
 		request.setOriginalQuery(query);
@@ -194,13 +189,13 @@ public class DJM {
 	/**
 	 * @return Returns the current value of mu.
 	 */
-	public int getMu() { return this.mu; }
+	public double getMu() { return this.mu; }
 	
 	/**
 	 * Update the value of mu used on DJM method. If <code>mu</code> < 0, the previous value is kept.
 	 * @param mu The new value of mu. It must be greater or equals than 0.
 	 */
-	public void setMu(int mu) { 
+	public void setMu(double mu) { 
 		if (mu < 0) return;
 		this.mu = mu;
 	}
