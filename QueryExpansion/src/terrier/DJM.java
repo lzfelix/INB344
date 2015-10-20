@@ -41,7 +41,7 @@ public class DJM {
 	private Stopwords stopwords;
 	
 	private double mu = 334;
-	private double lambda = 0.5;
+	private double lambda = 0.0;
 	private int amountOfRetrievedDocuments = 1000;
 	
 	/* Private constructor for a singleton class */
@@ -113,6 +113,7 @@ public class DJM {
 				
 				
 				double dirichlet = Math.log(Math.E + (c_w_d + this.mu * p_w_c) / (double)(docLen + this.mu));
+				double jm = Math.log(Math.E + this.lambda * p_w_c);
 				
 				//WORKING FORMULA
 //				double  x = this.mu * postingsList.getFrequency() / (double)statistics.getNumberOfTokens();
@@ -127,10 +128,10 @@ public class DJM {
 				// the later part is JM
 //				double formulaResult = (1 - this.lambda) * dirichlet + (this.lambda * p_w_c);
 //				double formulaResult = WeightingModelLibrary.log(dirichlet);
-				double formulaResult = dirichlet;
+//				double formulaResult = dirichlet;
 				
 				// ask Guido about adding the LOG. Using - to boost the score up
-				logP_d_q[docId] += formulaResult;
+				logP_d_q[docId] += (1 - this.lambda) * dirichlet + this.lambda * jm;
 			}
 		}	
 		

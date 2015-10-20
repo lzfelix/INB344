@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
-import dataStructures.Pair;
+import dataStructures.SingularPair;
 import dataStructures.TwoSidedHash;
 import dataStructures.WordStatistics;
 
@@ -16,7 +16,7 @@ import dataStructures.WordStatistics;
  */
 public class CHVQueryExpansion {
 	private TwoSidedHash technicalDictionary;
-	private HashMap<String, Pair> layDictionary;
+	private HashMap<String, SingularPair> layDictionary;
 	
 	private final String PARAMS_SEPARATOR = "\t";
 	private final String REMOVE_PARENTHESIS_REGEX = "\\s*\\(.*\\)";
@@ -42,7 +42,7 @@ public class CHVQueryExpansion {
 			int technical1 = technicalDictionary.forceDirectGet(parameters[2]);
 			int technical2 = technicalDictionary.forceDirectGet(parameters[3]);
 			
-			Pair layVocabulary = new Pair(technical1, technical2);
+			SingularPair layVocabulary = new SingularPair(technical1, technical2);
 			layDictionary.put(parameters[1], layVocabulary);
 		}
 		
@@ -79,7 +79,7 @@ public class CHVQueryExpansion {
 		String technicalTerm;
 		
 		if (layDictionary.containsKey(term)) {
-			Pair technicalIDs = layDictionary.get(term);
+			SingularPair technicalIDs = layDictionary.get(term);
 			
 			technicalTerm = technicalDictionary.getInvertedKey(technicalIDs.getX());
 			if (!technicalTerm.equals(term))

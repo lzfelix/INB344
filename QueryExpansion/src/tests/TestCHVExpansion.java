@@ -1,9 +1,16 @@
-package queryExpansion;
+package tests;
 import java.io.IOException;
 import java.util.Scanner;
 
+import queryExpansion.CHVQueryExpansion;
 
-public class Main {
+/**
+ * A simple class to test CHV expansion. Just type a query to expand.
+ * If expansions are found, they are printed, otherwise a newline is
+ * displayed.
+ * @author Luiz Felix
+ */
+public class TestCHVExpansion {
 	public static void main(String args[]) {
 		CHVQueryExpansion p = null;
 		
@@ -22,5 +29,6 @@ public class Main {
 				System.out.print(term + " ");
 			System.out.println();
 		}
+		s.close();
 	}
 }

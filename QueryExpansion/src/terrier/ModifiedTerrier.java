@@ -13,15 +13,11 @@ import queryExpansion.StagedQueryExpansion;
  * @author Luiz Felix
  */
 public class ModifiedTerrier {
-	private static String TERRIER_HOME = "/Users/luiz/Desktop/SET_A/terrier";
-	private static String INDEX_PATH = "/Users/luiz/Desktop/SET/terrier-4.0/processing/newIndex";
-//	private static String INDEX_PATH = "/Users/luiz/Desktop/SET/terrier-4.0/corpus/clef";
+	/* Path to the modified Consumer Health Vocabulary file */
 	private static String CHV_PATH = "./CHV/CHV_modified.txt";
-	private static String QUERIES_PATH = "tools/expanded_queries.txt";
-//	private static String QUERIES_PATH = "tools/clef_queries.txt";
-	private static String EXPANDED_QUERIES_PATH = "tools/clef_expanded_queries2.txt";
+	
+	/* Internal terrier parameter used as an alias for the index property */
 	private static String STD_INDEX_ALIAS = "data";
-	private static String RESULTS_FILE_PATH = "tools/output.txt";
 	
 	private static boolean IS_CLEF = false;
 	
@@ -122,33 +118,5 @@ public class ModifiedTerrier {
 	 */
 	public double getInternalMu() {
 		return DJM.getInstance().getMu();
-	}
-	
-	public static void main(String args[]) {
-		ModifiedTerrier terrier = null;
-		
-		try {
-			terrier = new ModifiedTerrier(TERRIER_HOME, INDEX_PATH);
-		} catch (Exception e) {
-			System.out.println("Exception caught: " + e.getMessage());
-			e.printStackTrace();
-		} 
-		
-		try {
-			
-//			Tunner t = new Tunner(terrier.index);
-//			t.tuneMu(1, 1);
-			
-			terrier.readQueries(QUERIES_PATH);
-//			terrier.writeExpandedQueries(EXPANDED_QUERIES_PATH);
-//			terrier.performQueriesWithStagedExpansion("tools/wololo.txt");
-			terrier.performQueriesWithoutExpansion(RESULTS_FILE_PATH);
-			
-//			terrier.performQueriesWithStagedExpansion(RESULTS_FILE_PATH);
-		}
-		catch (Exception e) {
-			System.out.println("Error while reading the queries: " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
+	}	
 }
