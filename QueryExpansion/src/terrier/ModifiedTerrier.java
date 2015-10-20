@@ -1,49 +1,29 @@
 package terrier;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
 
-import org.apache.poi.hpsf.UnexpectedPropertySetTypeException;
-import org.terrier.matching.models.DirichletLM;
-import org.terrier.matching.models.WeightingModel;
-import org.terrier.matching.models.WeightingModelLibrary;
-import org.terrier.querying.Request;
-import org.terrier.structures.DocumentIndex;
 import org.terrier.structures.Index;
-import org.terrier.structures.Lexicon;
-import org.terrier.structures.LexiconEntry;
-import org.terrier.structures.PostingIndex;
-import org.terrier.structures.outputformat.TRECDocnoOutputFormat;
-import org.terrier.structures.postings.IterablePosting;
-import org.terrier.terms.PorterStemmer;
-import org.terrier.terms.Stopwords;
 
-import queryExpansion.CHVQueryExpansion;
-import queryExpansion.EMIMQueryExpansion;
 import queryExpansion.StagedQueryExpansion;
 
-import com.google.common.collect.Ordering;
-import com.google.common.collect.TreeMultimap;
-
+/**
+ * This class uses Terrier's functionalities to perform IR over a corpus.
+ * @author Luiz Felix
+ */
 public class ModifiedTerrier {
 	private static String TERRIER_HOME = "/Users/luiz/Desktop/SET_A/terrier";
 	private static String INDEX_PATH = "/Users/luiz/Desktop/SET/terrier-4.0/processing/newIndex";
 //	private static String INDEX_PATH = "/Users/luiz/Desktop/SET/terrier-4.0/corpus/clef";
 	private static String CHV_PATH = "./CHV/CHV_modified.txt";
-	private static String QUERIES_PATH = "tools/queries.txt";
+	private static String QUERIES_PATH = "tools/expanded_queries.txt";
 //	private static String QUERIES_PATH = "tools/clef_queries.txt";
-	private static String EXPANDED_QUERIES_PATH = "tools/clef_expanded_queries.txt";
+	private static String EXPANDED_QUERIES_PATH = "tools/clef_expanded_queries2.txt";
 	private static String STD_INDEX_ALIAS = "data";
 	private static String RESULTS_FILE_PATH = "tools/output.txt";
+	
+	private static boolean IS_CLEF = false;
 	
 	private Index index;
 	private StagedQueryExpansion queryExpansion;
@@ -102,7 +82,7 @@ public class ModifiedTerrier {
 	 * @throws Exception If the CHV file isn't found of if there's a fault while reading the index.
 	 */
 	public void performQueriesWithStagedExpansion(String outputFile) throws Exception {
-		DJM.getInstance().performQueries(outputFile, queries, index, this.queryExpansion);
+		DJM.getInstance().performQueries(outputFile, queries, index, this.queryExpansion, IS_CLEF);
 	}
 	
 	/**
@@ -111,7 +91,7 @@ public class ModifiedTerrier {
 	 * @throws Exception If there's a fault while reading the index.
 	 */
 	public void performQueriesWithoutExpansion(String outputFile) throws Exception {
-		DJM.getInstance().performQueries(outputFile, queries, index, null);
+		DJM.getInstance().performQueries(outputFile, queries, index, null, IS_CLEF);
 	}
 	
 	/**
@@ -121,6 +101,27 @@ public class ModifiedTerrier {
 	 */
 	public void writeExpandedQueries(String outputFile) throws Exception {
 		DJM.getInstance().writeExpandedQueries(outputFile, queries, index, this.queryExpansion);
+	}
+	
+	/**
+	 * Automatically set DJM's mu parameter using the Tunner class.
+	 * @param sampling The percentage of the corpus that is going to be taken in account while tunning.
+	 * More is slower, but gives better precision.
+	 * @throws IOException If there's an I/O fault while reading the index file.
+	 */
+	public void tuneMu(double sampling) throws IOException {
+		Tunner t = new Tunner(index);
+		double mu = t.tuneMu(1.0f, sampling);
+		
+		DJM.getInstance().setMu(mu);
+	}
+	
+	/**
+	 * Returns the current value of mu used by DJM in order to score the documents.
+	 * @return Returns the current value of mu used by DJM in order to score the documents.
+	 */
+	public double getInternalMu() {
+		return DJM.getInstance().getMu();
 	}
 	
 	public static void main(String args[]) {
@@ -135,12 +136,13 @@ public class ModifiedTerrier {
 		
 		try {
 			
-			Tunner t = new Tunner(terrier.index);
-			t.tuneMu(10000, 1);
+//			Tunner t = new Tunner(terrier.index);
+//			t.tuneMu(1, 1);
 			
-//			terrier.readQueries(QUERIES_PATH);
+			terrier.readQueries(QUERIES_PATH);
 //			terrier.writeExpandedQueries(EXPANDED_QUERIES_PATH);
-//			terrier.performQueriesWithoutExpansion(RESULTS_FILE_PATH);
+//			terrier.performQueriesWithStagedExpansion("tools/wololo.txt");
+			terrier.performQueriesWithoutExpansion(RESULTS_FILE_PATH);
 			
 //			terrier.performQueriesWithStagedExpansion(RESULTS_FILE_PATH);
 		}
@@ -148,9 +150,5 @@ public class ModifiedTerrier {
 			System.out.println("Error while reading the queries: " + e.getMessage());
 			e.printStackTrace();
 		}
-		
-		
-		
-		System.out.println("Done.");
 	}
 }

@@ -10,6 +10,7 @@ import org.terrier.structures.DocumentIndexEntry;
 import org.terrier.structures.Index;
 import org.terrier.structures.Lexicon;
 import org.terrier.structures.LexiconEntry;
+import org.terrier.structures.Pointer;
 import org.terrier.structures.PostingIndex;
 import org.terrier.structures.bit.InvertedIndex;
 import org.terrier.structures.postings.IterablePosting;
@@ -27,7 +28,7 @@ public class Tunner {
 	
 	/**
 	 * Creates a Tunner object, which is able to fit mu and lambda according to
-	 * C Zhai and J. Lafferty Paper
+	 * C. Zhai and J. Lafferty Paper
 	 * 
 	 * @param index The terrier Index object
 	 */
@@ -56,7 +57,6 @@ public class Tunner {
 		double result = 0;
 		
 		// loops are the inverse from the paper
-		
 		for (int w = 0; w < vocabularySize; w++) {
 			Entry<String, LexiconEntry> currentWord = vocabulary.getIthLexiconEntry(w);
 			
@@ -70,14 +70,46 @@ public class Tunner {
 				double c_w_d = postingsList.getFrequency();
 				double d_len = postingsList.getDocumentLength() - 1;	//the paper used doc_len - 1
 				
-				A = c_w_d * Math.pow((d_len * p_w_c - c_w_d + 1), 2);
-				B = Math.pow((d_len + mu) * (c_w_d - 1 + mu * p_w_c), 2);
+				A = c_w_d * (d_len * p_w_c - c_w_d + 1);
+				B = (d_len + mu) * (c_w_d - 1 + mu * p_w_c);
 				
 				result += A / B;
 			}
 		}
 		
 		return result;
+	}
+	
+	private double g_prime(double mu, double samples) throws IOException {
+		long N = (long)Math.ceil(index.getDocumentIndex().getNumberOfDocuments() * samples);
+		int vocabularySize = (int)Math.ceil(index.getCollectionStatistics().getNumberOfUniqueTerms() * samples);
+		
+		CollectionStatistics statistics = index.getCollectionStatistics();
+		
+		double result = 0;
+		
+		// loops are the inverse from the paper
+		for (int w = 0; w < vocabularySize; w++) {
+			Entry<String, LexiconEntry> currentWord = vocabulary.getIthLexiconEntry(w);
+			
+			double p_w_c = currentWord.getValue().getNumberOfEntries() / (double)statistics.getNumberOfTokens(); 
+			double A, B;
+			
+			// this is the outer loop in the paper
+			IterablePosting postingsList = invertedIndex.getPostings(currentWord.getValue());
+			while (postingsList.next() != IterablePosting.EOL) {
+				
+				double c_w_d = postingsList.getFrequency();
+				double d_len = postingsList.getDocumentLength() - 1;	//the paper used doc_len - 1
+				
+				A = Math.pow(c_w_d * (d_len * p_w_c - c_w_d + 1),2);
+				B = Math.pow((d_len + mu),2) * Math.pow(c_w_d - 1 + mu * p_w_c, 2);
+				
+				result += A / B;
+			}
+		}
+		
+		return -result;
 	}
 	
 	// the formula can be resumed in:
@@ -93,21 +125,24 @@ public class Tunner {
 	 * or the amount of iterations is bigger than <code>MAX_ITERATIONS</code>. Relative difference on
 	 * the update value is ignored.
 	 * @param mu The initial value of mu. According to the paper authors 1 is a good initial point.
-	 * @param samples The percentage of the corpus that is going to be taken in account when tunning mu.
+	 * @param sampling The percentage of the corpus that is going to be taken in account when tunning mu.
 	 * This value must be ]0,1[.
 	 * @return The tuned value of Mu.
 	 * @throws IOException If there's an I/O fault while reading the index data.
 	 */
-	public double tuneMu(double mu, double samples) throws IOException {
-		double g;
+	public double tuneMu(double mu, double sampling) throws IOException {
+		double g, g_prime;
 		int counter = 0;
 		
 		do {
-			g = g(mu, samples);
-			mu = mu + 1/g;
+			g = g(mu, sampling);
+			g_prime = g_prime(mu, sampling);
 			
-			System.out.println("g(mu) " + g);
-			System.out.println("Iteration " + counter + " mu = " + mu);
+			System.out.println("g_prime(mu) = " + g_prime);
+			
+			mu = mu - g / g_prime;
+			
+//			System.out.println("Iteration " + counter + " mu = " + mu);
 		} while (++counter < MAX_ITERATIONS && Math.abs(g) > EPSILON);
 		
 		return mu;

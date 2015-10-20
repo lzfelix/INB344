@@ -11,9 +11,7 @@ import java.util.Set;
 
 import org.terrier.matching.ResultSet;
 import org.terrier.matching.CollectionResultSet;
-import org.terrier.matching.models.WeightingModelLibrary;
 import org.terrier.querying.Request;
-import org.terrier.structures.BitIndexPointer;
 import org.terrier.structures.CollectionStatistics;
 import org.terrier.structures.Index;
 import org.terrier.structures.Lexicon;
@@ -23,6 +21,7 @@ import org.terrier.structures.outputformat.TRECDocnoOutputFormat;
 import org.terrier.structures.postings.IterablePosting;
 import org.terrier.terms.PorterStemmer;
 import org.terrier.terms.Stopwords;
+import org.terrier.utility.ApplicationSetup;
 
 import queryExpansion.PipelineInterface;
 
@@ -35,13 +34,13 @@ public class DJM {
 	
 	/* Used when outputing the file */
 	public final String METHOD_NAME = "DJM";
-	public final int MIN_EXPANSIONS = 5;
-	public final int MAX_EXPANSIONS = 10;
+	public final int MIN_EXPANSIONS = 7;
+	public final int MAX_EXPANSIONS = 14;
 	
 	private PorterStemmer porterStemmer;
 	private Stopwords stopwords;
 	
-	private double mu = 2500;
+	private double mu = 334;
 	private double lambda = 0.5;
 	private int amountOfRetrievedDocuments = 1000;
 	
@@ -112,16 +111,23 @@ public class DJM {
 				double c_w_d = postingsList.getFrequency();
 				// double c_w_d = postingsList.getFrequency() / (double)postingsList.getDocumentLength();
 				
-//				double dirichlet = (c_w_d + this.mu * p_w_c) / (double)(docLen + this.mu);
 				
-				double  x = this.mu + lexicon.getFrequency() / (double)statistics.getNumberOfTokens();
+				double dirichlet = Math.log(Math.E + (c_w_d + this.mu * p_w_c) / (double)(docLen + this.mu));
 				
+				//WORKING FORMULA
+//				double  x = this.mu * postingsList.getFrequency() / (double)statistics.getNumberOfTokens();
+//				double part2 = WeightingModelLibrary.log(this.mu / (double)(postingsList.getDocumentLength() + this.mu));
+//								
+//				double dirichlet = WeightingModelLibrary.log(1 + postingsList.getFrequency() / x) + part2;
+				//--WORKING FORMULA
 				
-				double dirichlet = WeightingModelLibrary.log(1 + lexicon.getFrequency() / x) + WeightingModelLibrary.log(this.mu / (double)(postingsList.getDocumentLength() + this.mu));
+//				double dirichlet = WeightingModelLibrary.log(1 + postingsList.getFrequency() / (this.mu * p_w_c)) +
+//						WeightingModelLibrary.log(this.mu / (double)(postingsList.getDocumentLength() + this.mu));
 				
 				// the later part is JM
-				double formulaResult = (1 - this.lambda) * dirichlet + (this.lambda * p_w_c);
-//				double formulaResult = dirichlet;
+//				double formulaResult = (1 - this.lambda) * dirichlet + (this.lambda * p_w_c);
+//				double formulaResult = WeightingModelLibrary.log(dirichlet);
+				double formulaResult = dirichlet;
 				
 				// ask Guido about adding the LOG. Using - to boost the score up
 				logP_d_q[docId] += formulaResult;
@@ -148,6 +154,7 @@ public class DJM {
 		
 		// storing data to generate the output file on the trec_eval format
 		Request request = new Request();
+		request.setIndex(index);
 		request.setResultSet(resultSet);
 		
 		return request;
@@ -176,10 +183,17 @@ public class DJM {
 	 * @param index The Terrier index file
 	 * @param PipelineInterface An object to the class used to perform query expansion. If this object is <code>null</code>, then no
 	 * query expansion is performed
+	 * @param useDocnoAsMeta if this parameter is set to true, then the document identification used on output is its filename, otherwise
+	 * it's the document's number
 	 * @throws Exception if an IO fault happens
 	 */
-	public void performQueries(String outputFile, Map<String, String> queries, Index index, PipelineInterface queryExpansionPipeline) throws Exception {
+	public void performQueries(String outputFile, Map<String, String> queries, Index index, PipelineInterface queryExpansionPipeline,
+			boolean useDocnoAsMeta) throws Exception {
 		// this is responsible for organizing the ResultSets on the correct output format
+		
+		if (useDocnoAsMeta)
+			ApplicationSetup.setProperty("trec.querying.outputformat.docno.meta.key", "filename");
+		
 		TRECDocnoOutputFormat outputFormatter = new TRECDocnoOutputFormat(index);
 		
 		PrintWriter pw = new PrintWriter(new File(outputFile));
