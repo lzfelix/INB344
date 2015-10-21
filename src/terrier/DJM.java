@@ -174,8 +174,6 @@ public class DJM {
 		
 		PrintWriter pw = new PrintWriter(new File(outputFile));
 		
-		System.out.println("Lambda = " + this.lambda);
-		
 		for (Entry<String, String> query : queries.entrySet()) {
 			System.out.println("Processing query " + query.getKey());
 			
