@@ -17,13 +17,15 @@ import org.terrier.terms.Stopwords;
  * 
  * @author Luiz Felix
  */
-public class StagedQueryExpansion implements PipelineInterface{
+public class StagedQueryExpansion {
 	// used to prepare the queries
 	private PorterStemmer porterStemmer;
 	private Stopwords stopwords;
 	
 	private EMIMQueryExpansion qe;
 	private CHVQueryExpansion chv;
+	
+	private final int DEFAULT_AMOUNT_OF_TRANSLATIONS = 10;
 	
 	/**
 	 * Creates an object that expands a query by incrementally using the Consumer Health Vocabulary
@@ -82,39 +84,42 @@ public class StagedQueryExpansion implements PipelineInterface{
 	 * @param query The original input query
 	 * @param maxExpansions How many words are allowed to be added to the query. If this value is 0 then only
 	 * CHV expansion is performed
+	 * @param doCHV if <code>true</code> CHV query expansion is performed.
 	 * @return an stopped, stemmed, lower cased, unique-terms query.
 	 * @throws IOException If there's an IO fault while performing EMIM query expansion.
 	 */
-	public String expandQuery(String query, int maxExpansions) throws IOException {
+	public String expandQuery(String query, int maxExpansions, boolean doCHV) throws IOException {
 		StringBuilder expansionQueryBuffer = new StringBuilder();
-
-		/* Phrase 1 - CHV expansion (simple as that) */
-		String CHVWords[] = chv.expandQuery(query, maxExpansions);
+		String originalQuery = query;
 		
-		/* Phase 2 - Stop, steam and lower case the CHV expansions. Don't add them to the original query yet */
-		int maxCHVExpansions;
-		if (maxExpansions > 0 && CHVWords.length > maxExpansions / 2)
-			maxCHVExpansions = maxExpansions / 2;
-		else
-			maxCHVExpansions = CHVWords.length;
-		
-		for (int i = 0; i < maxCHVExpansions; i++) {
-			expansionQueryBuffer.append(prepareQuery(CHVWords[i]));
-			expansionQueryBuffer.append(" ");
-		}
-		
-		/* Phase 3 - Stop, steam and lower case the original query */
+		/* Phase 1 - Stop, steam and lower case the original query */
 		query = prepareQuery(query);
 		
-		/* Phase 4 - EMIM expansion (this one is tricky) */
-		
-		// updates the amount of expansion slots. Since the CHV expansion usually returns
-		// few terms, all of them are considered.
-		maxExpansions -= maxCHVExpansions;
-		
-		if (maxExpansions > 0) {
-			int amountOfTranslations = maxExpansions;
+//		if (doCHV) {
+			/* Phrase 2 - CHV expansion (simple as that) */
+			String CHVWords[] = chv.expandQuery(originalQuery, maxExpansions);
 			
+			/* Phase 3 - Stop, steam and lower case the CHV expansions. Don't add them to the original query yet */
+			int maxCHVExpansions;
+			if (CHVWords.length > maxExpansions)
+				maxCHVExpansions = maxExpansions;
+			else
+				maxCHVExpansions = CHVWords.length;
+			
+			for (int i = 0; i < maxCHVExpansions; i++) {
+				expansionQueryBuffer.append(prepareQuery(CHVWords[i]));
+				expansionQueryBuffer.append(" ");
+			}
+			
+			System.out.println("Got from CHV " + maxCHVExpansions);
+			
+			// updates the amount of expansion slots. Since the CHV expansion usually returns
+			// few terms, all of them are considered.
+			maxExpansions -= maxCHVExpansions;
+//		}
+		
+		/* Phase 4 - EMIM expansion (this one is tricky) */
+		if (maxExpansions > 0) {
 			// stores the expansion for each term
 			List<List<String>> expansions = new ArrayList<>();
 			
@@ -123,13 +128,9 @@ public class StagedQueryExpansion implements PipelineInterface{
 			 * one new term, the amount of free expansion slots is decreased by 1.
 			 */
 			for (String word : query.split(" ")) {
-				if (amountOfTranslations == 0) break;
-				
 				// converting the linked list into array list for efficiency
-				ArrayList<String> translationArray = new ArrayList<>(qe.getTranslations(word, amountOfTranslations));
+				ArrayList<String> translationArray = new ArrayList<>(qe.getTranslations(word, DEFAULT_AMOUNT_OF_TRANSLATIONS));
 				expansions.add(translationArray);
-				
-				amountOfTranslations--;
 			}
 			
 			/* Phase 4.1 - Adding just EMIM translations enough to the query using Round-robin*/
@@ -164,10 +165,11 @@ public class StagedQueryExpansion implements PipelineInterface{
 			} while (maxExpansions > 0 );			
 		}
 		
+		
 		/* Phase 5 - Joining the both expansions and the treated query and return it */
 		String expandedQuery = query + " " + expansionQueryBuffer.toString();
 		
-		/* Phase 6 - Removing eventual repeated terms -- This method can be extracted, but it'll screw the performance*/
+		/* Phase 6 - Removing eventual repeated terms */
 		Set<String> uniqueTerms = new HashSet<String>();
 		StringBuilder uniqueTermsBuffer = new StringBuilder();
 		

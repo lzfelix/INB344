@@ -19,8 +19,6 @@ public class ModifiedTerrier {
 	/* Internal terrier parameter used as an alias for the index property */
 	private static String STD_INDEX_ALIAS = "data";
 	
-	private static boolean IS_CLEF = false;
-	
 	private Index index;
 	private StagedQueryExpansion queryExpansion;
 	
@@ -75,28 +73,31 @@ public class ModifiedTerrier {
 	/**
 	 * Runs the read queries on the index using CHV-EMIM query expansion.
 	 * @param outputFile Path to the output results file.
+	 * @param doCHV if <code>true</code> CHV query expansion is performed.
 	 * @throws Exception If the CHV file isn't found of if there's a fault while reading the index.
 	 */
-	public void performQueriesWithStagedExpansion(String outputFile) throws Exception {
-		DJM.getInstance().performQueries(outputFile, queries, index, this.queryExpansion, IS_CLEF);
+	public void performQueriesWithStagedExpansion(String outputFile, boolean useDocnoAsMeta, boolean doCHV) throws Exception {
+		DJM.getInstance().performQueries(outputFile, queries, index, this.queryExpansion, useDocnoAsMeta, doCHV);
 	}
 	
 	/**
 	 * Runs the read queries on the index without expanding them.
 	 * @param outputFile Path to the output results file.
+	 * @param doCHV if <code>true</code> CHV query expansion is performed.
 	 * @throws Exception If there's a fault while reading the index.
 	 */
-	public void performQueriesWithoutExpansion(String outputFile) throws Exception {
-		DJM.getInstance().performQueries(outputFile, queries, index, null, IS_CLEF);
+	public void performQueriesWithoutExpansion(String outputFile, boolean useDocnoAsMeta, boolean doCHV) throws Exception {
+		DJM.getInstance().performQueries(outputFile, queries, index, null, useDocnoAsMeta, doCHV);
 	}
 	
 	/**
 	 * Expands the read queries using the staged expansion and creates a new file to be used with Terrier.
 	 * @param outputFile The path to the new file to be created.
+	 * @param CHVOnly if <code>true</code> only CHV query expansion is performed.
 	 * @throws Exception If there's an I/O fault either while expanding the query or writing the new file to disk.
 	 */
-	public void writeExpandedQueries(String outputFile) throws Exception {
-		DJM.getInstance().writeExpandedQueries(outputFile, queries, index, this.queryExpansion);
+	public void writeExpandedQueries(String outputFile, boolean CHVOnly) throws Exception {
+		DJM.getInstance().writeExpandedQueries(outputFile, queries, index, this.queryExpansion, CHVOnly);
 	}
 	
 	/**

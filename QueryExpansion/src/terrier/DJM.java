@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.terrier.matching.ResultSet;
 import org.terrier.matching.CollectionResultSet;
+import org.terrier.matching.models.WeightingModelLibrary;
 import org.terrier.querying.Request;
 import org.terrier.structures.CollectionStatistics;
 import org.terrier.structures.Index;
@@ -23,10 +24,15 @@ import org.terrier.terms.PorterStemmer;
 import org.terrier.terms.Stopwords;
 import org.terrier.utility.ApplicationSetup;
 
-import queryExpansion.PipelineInterface;
+import queryExpansion.StagedQueryExpansion;
 
 /**
  * A class for Dirichlet Jelinek-Mercer two-phase language model smoothing
+ * By default JM smoothing is deactivated. In order to turn it on, simply set
+ * lambda using the <code>setLambda</code> method to a value between bigger
+ * than 0 and smaller than 0. Setting this variable to 0 again will shut JM off.
+ * If you want shut down Dirichlet smoothing, use <code>setMu</code> to set this
+ * constant to 0.
  * @author Luiz Felix
  */
 public class DJM {
@@ -34,13 +40,14 @@ public class DJM {
 	
 	/* Used when outputing the file */
 	public final String METHOD_NAME = "DJM";
-	public final int MIN_EXPANSIONS = 7;
-	public final int MAX_EXPANSIONS = 14;
+	
+	/* Used as a parameter when determining the amount of expansion for a given query */
+	public final double K = 6;
 	
 	private PorterStemmer porterStemmer;
 	private Stopwords stopwords;
 	
-	private double mu = 334;
+	private double mu = 303;	//334
 	private double lambda = 0.0;
 	private int amountOfRetrievedDocuments = 1000;
 	
@@ -112,41 +119,12 @@ public class DJM {
 				// double c_w_d = postingsList.getFrequency() / (double)postingsList.getDocumentLength();
 				
 				
-				double dirichlet = Math.log(Math.E + (c_w_d + this.mu * p_w_c) / (double)(docLen + this.mu));
-				double jm = Math.log(Math.E + this.lambda * p_w_c);
+				double dirichlet = WeightingModelLibrary.log(2 + (c_w_d + this.mu * p_w_c) / (double)(docLen + this.mu));
+				double jm = WeightingModelLibrary.log(2 + p_w_c);
 				
-				//WORKING FORMULA
-//				double  x = this.mu * postingsList.getFrequency() / (double)statistics.getNumberOfTokens();
-//				double part2 = WeightingModelLibrary.log(this.mu / (double)(postingsList.getDocumentLength() + this.mu));
-//								
-//				double dirichlet = WeightingModelLibrary.log(1 + postingsList.getFrequency() / x) + part2;
-				//--WORKING FORMULA
-				
-//				double dirichlet = WeightingModelLibrary.log(1 + postingsList.getFrequency() / (this.mu * p_w_c)) +
-//						WeightingModelLibrary.log(this.mu / (double)(postingsList.getDocumentLength() + this.mu));
-				
-				// the later part is JM
-//				double formulaResult = (1 - this.lambda) * dirichlet + (this.lambda * p_w_c);
-//				double formulaResult = WeightingModelLibrary.log(dirichlet);
-//				double formulaResult = dirichlet;
-				
-				// ask Guido about adding the LOG. Using - to boost the score up
 				logP_d_q[docId] += (1 - this.lambda) * dirichlet + this.lambda * jm;
 			}
 		}	
-		
-//		double max = 0;
-//		for (int i = 0; i < logP_d_q.length; i++) {
-//			if (logP_d_q[i] > max)
-//				max = logP_d_q[i];
-//		}
-//		
-//		for (int i = 0; i < logP_d_q.length; i++) {
-//			if (logP_d_q[i] > 1e-5)
-//				logP_d_q[i] = (max - logP_d_q[i]) * 10;
-//			else
-//				logP_d_q[i] = 0;
-//		}
 		
 		// storing the results on Terrier format and ordering document scoring
 		ResultSet resultSet = new CollectionResultSet(statistics.getNumberOfDocuments());
@@ -162,17 +140,13 @@ public class DJM {
 	}
 
 	/**
-	 * The policy to expand a query. If it has more TheoryAnchor <code>MAX_EXPANSION</code> words, it allows
-	 * <code>MIN_EXPANSION</code>, otherwise <code>MAX_EXPANSION</code> - (amount of words on the current query)
-	 * expansions are allows.
+	 * The policy to expand a query. It sets the amount of expansions according to
+	 * the query length. Long queries are allowed to less expansions than shorter ones.
 	 * @param query the input query 
 	 * @return the amount of words allows to expand <code>query</code>
 	 */
-	private int expandingFactor(String query) {
-		int amountOfWords = query.split(" ").length;
-		int toExpand = MAX_EXPANSIONS - amountOfWords;
-
-		return Math.max(toExpand, MIN_EXPANSIONS);
+	private int expandingFactor(String query) {		 
+		return (int)Math.round(1/Math.log(query.length()) * K);
 	}
 	
 	/**
@@ -186,10 +160,11 @@ public class DJM {
 	 * query expansion is performed
 	 * @param useDocnoAsMeta if this parameter is set to true, then the document identification used on output is its filename, otherwise
 	 * it's the document's number
+	 * @param CHVOnly if <code>true</code> only CHV query expansion is performed.
 	 * @throws Exception if an IO fault happens
 	 */
-	public void performQueries(String outputFile, Map<String, String> queries, Index index, PipelineInterface queryExpansionPipeline,
-			boolean useDocnoAsMeta) throws Exception {
+	public void performQueries(String outputFile, Map<String, String> queries, Index index, StagedQueryExpansion queryExpansionPipeline,
+			boolean useDocnoAsMeta, boolean CHVOnly) throws Exception {
 		// this is responsible for organizing the ResultSets on the correct output format
 		
 		if (useDocnoAsMeta)
@@ -199,6 +174,8 @@ public class DJM {
 		
 		PrintWriter pw = new PrintWriter(new File(outputFile));
 		
+		System.out.println("Lambda = " + this.lambda);
+		
 		for (Entry<String, String> query : queries.entrySet()) {
 			System.out.println("Processing query " + query.getKey());
 			
@@ -206,7 +183,7 @@ public class DJM {
 			
 			String expandedQuery;
 			if (queryExpansionPipeline != null)
-				expandedQuery = queryExpansionPipeline.expandQuery(query.getValue(), amountOfExpansions);
+				expandedQuery = queryExpansionPipeline.expandQuery(query.getValue(), amountOfExpansions, CHVOnly);
 			else
 				expandedQuery = query.getValue();
 			
@@ -230,16 +207,21 @@ public class DJM {
 	 * @param queries A Map containing queryID -> queryText. The IDs are preserved on the new file.
 	 * @param index The Terrier index object.
 	 * @param queryExpansionPipeline The query expansion strategy, that must correspond to a class implementing PipelineInterfae
+	 * @param CHVOnly if <code>true</code> only CHV query expansion is performed.
 	 * @throws Exception If there's an I/O fault either while expanding the query or writing the new file to disk.
 	 */
-	public void writeExpandedQueries(String outputFile, Map<String, String> queries, Index index, PipelineInterface queryExpansionPipeline) throws Exception {
+	public void writeExpandedQueries(String outputFile, Map<String, String> queries, Index index, StagedQueryExpansion queryExpansionPipeline,
+			boolean CHVOnly) throws Exception {
 		FileWriter fw = new FileWriter(new File(outputFile));
 		
 		for (Entry<String, String> query : queries.entrySet()) {
 			System.out.println("Expanding query " + query.getKey() + ": " + query.getValue());
 			
 			int amountOfExpansions = expandingFactor(query.getValue());
-			String expandedQuery = queryExpansionPipeline.expandQuery(query.getValue(), amountOfExpansions);
+			
+			System.out.println("Allowing " + amountOfExpansions);
+			
+			String expandedQuery = queryExpansionPipeline.expandQuery(query.getValue(), amountOfExpansions, CHVOnly);
 			
 			System.out.println("Got: " + expandedQuery);
 			
