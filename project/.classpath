@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="libs/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="libs/commons-logging-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="libs/fastutil5-5.0.9.jar"/>
+	<classpathentry kind="lib" path="libs/findbugs-1.3.2-annotations.jar"/>
+	<classpathentry kind="lib" path="libs/fontbox-1.8.4.jar"/>
+	<classpathentry kind="lib" path="libs/gson-1.7.1.jar"/>
+	<classpathentry kind="lib" path="libs/hadoop-0.20.2+228-core.jar"/>
+	<classpathentry kind="lib" path="libs/JavaFastPFOR_Terrier.jar"/>
+	<classpathentry kind="lib" path="libs/jforests-0.0.4-SNAPSHOT-jar-pack.jar"/>
+	<classpathentry kind="lib" path="libs/jsoup-1.7.3.jar"/>
+	<classpathentry kind="lib" path="libs/junit-4.8.1.jar"/>
+	<classpathentry kind="lib" path="libs/kamikaze-3.0.3.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="libs/org.mortbay.jetty-5.1.15.jar"/>
+	<classpathentry kind="lib" path="libs/pdfbox-1.8.4.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.8-20120326.jar"/>
+	<classpathentry kind="lib" path="libs/poi-ooxml-3.8-20120326.jar"/>
+	<classpathentry kind="lib" path="libs/poi-ooxml-schemas-3.8-20120326.jar"/>
+	<classpathentry kind="lib" path="libs/poi-scratchpad-3.8-20120326.jar"/>
+	<classpathentry kind="lib" path="libs/sam-1.108.jar"/>
+	<classpathentry kind="lib" path="libs/servlet-api.jar"/>
+	<classpathentry kind="lib" path="libs/snowball-20071024.jar"/>
+	<classpathentry kind="lib" path="libs/terrier-4.0-core.jar"/>
+	<classpathentry kind="lib" path="libs/terrier-4.0-desktop.jar"/>
+	<classpathentry kind="lib" path="libs/terrier-4.0-learning.jar"/>
+	<classpathentry kind="lib" path="libs/terrier-4.0-test.jar"/>
+	<classpathentry kind="lib" path="libs/terrier-4.0-trec.jar"/>
+	<classpathentry kind="lib" path="libs/terrier-4.0-websitesearch.jar"/>
+	<classpathentry kind="lib" path="libs/trove-2.0.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="libs/guava-17.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

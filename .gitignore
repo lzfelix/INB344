@@ -3,3 +3,5 @@
 .DS_Store
 /corpus2/
 /corpus_annotated/
+.DS_Store
+temp/*
