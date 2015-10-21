@@ -9,13 +9,19 @@ import terrier.ModifiedTerrier;
  *
  */
 public class UseTerrier {
+	/* path to Terrier */
 	private static String TERRIER_HOME = "/Users/luiz/Desktop/SET_A/terrier";
-//	private static String INDEX_PATH = "/Users/luiz/Desktop/SET/terrier-4.0/processing/newIndex";
+	
+	/* path to the already processed index folder */
 	private static String INDEX_PATH = "/Users/luiz/Desktop/SET/terrier-4.0/corpus/clef";
-//	private static String QUERIES_PATH = "tools/expanded_queries.txt";
-	private static String QUERIES_PATH = "tools/clef_lnqueries.txt";
-	private static String EXPANDED_QUERIES_PATH = "tools/clef_lnqueries.txt";
+	
+	/* where to save the querying results -- if the case */
 	private static String RESULTS_FILE_PATH = "tools/output.txt";
+	
+	/* where to save the expanded queries -- if the case */
+	private static String EXPANDED_QUERIES_PATH = "tools/clef_lnqueries.txt";
+	
+	private static String QUERIES_PATH = "tools/clef_queries.txt";
 	
 	public static void main(String args[]) {
 		ModifiedTerrier terrier = null;
@@ -36,8 +42,7 @@ public class UseTerrier {
 			terrier.readQueries(QUERIES_PATH);
 			
 			/* Now you can perform retrieval with the original queries, expand them and the perform retrieval 
-			 * or just save the expanded queries
-			 */
+			 * or just save the expanded queries */
 //			terrier.writeExpandedQueries(EXPANDED_QUERIES_PATH, false);
 //			terrier.performQueriesWithStagedExpansion(RESULTS_FILE_PATH);
 			terrier.performQueriesWithoutExpansion(RESULTS_FILE_PATH, true, true);
