@@ -72,7 +72,7 @@ public class CHVQueryExpansion {
 	 * Given a lay-people word, tries to find technical terms.
 	 * @param term The lay-people vocabulary
 	 * @return An 2-position array containing at least 1 word, if the lay-term was found. Otherwise the positions
-	 * contain <code>null<code>.
+	 * contain <code>null</code>.
 	 */
 	public String[] expand(String term) {
 		String technicalTerms[] = new String[2];

@@ -150,13 +150,13 @@ public class DJM {
 	}
 	
 	/**
-	 * Performs a set of queries, stored in a HashMap as <Key, Query> pair on the corpus. After each query is performed,
+	 * Performs a set of queries, stored in a <code>HashMap<Key, Query></code> pair on the corpus. After each query is performed,
 	 * its result is stored on <code>outputFile</code> path.
 	 * @param outputFile The complete file path to where to write the file with the queries result.
 	 * @param queries Contains the queries on pairs <Key, Query>. The queries must be space-separated and Stopwords and Porter-Stemmer
 	 * is performed over them before issuing them to Terrier.
 	 * @param index The Terrier index file
-	 * @param PipelineInterface An object to the class used to perform query expansion. If this object is <code>null</code>, then no
+	 * @param StagedQueryExpansion An object to the class used to perform query expansion. If this object is <code>null</code>, then no
 	 * query expansion is performed
 	 * @param useDocnoAsMeta if this parameter is set to true, then the document identification used on output is its filename, otherwise
 	 * it's the document's number

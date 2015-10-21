@@ -3,8 +3,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 /**
- * A class that wraps a standard HashMap<String, Integer>, but after <code>invertDictionary</code> is 
- * invoked, the table is updated on the form HashMap<Integer, String>. Both String and Integer must be
+ * A class that wraps a standard <code>HashMap<String, Integer></code>, but after <code>invertDictionary</code> is 
+ * invoked, the table is updated on the form <code>HashMap<Integer, String></code>. Both String and Integer must be
  * unique.
  * 
  * This class can be improved
@@ -26,7 +26,7 @@ public class TwoSidedHash {
 	 * If the initial dictionary already contains this key, return its identifier, otherwise append it and
 	 * then return its ID. If this fuction is called after <code>invertDictionary()</code> it simply returns
 	 * -1 with no side-effects.
-	 * @param The new key to insert into the dictionary
+	 * @param key The new key to insert into the dictionary
 	 * @return The unique ID of such key
 	 */
 	public int forceDirectGet(String key) {
@@ -58,7 +58,7 @@ public class TwoSidedHash {
 	/**
 	 * Queries the inverted index based on the ID.
 	 * @param ID the ID which maps to a String
-	 * @return the String that corresponds to ID, or <code>null<code> if either the dictionary wasn't
+	 * @return the String that corresponds to ID, or <code>null</code> if either the dictionary wasn't
 	 * reversed or if the element doesn't exists.
 	 */
 	public String getInvertedKey(int ID) {

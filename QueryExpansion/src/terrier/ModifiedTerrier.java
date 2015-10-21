@@ -73,6 +73,7 @@ public class ModifiedTerrier {
 	/**
 	 * Runs the read queries on the index using CHV-EMIM query expansion.
 	 * @param outputFile Path to the output results file.
+	 * @param useDocnoAsMeta if the document name should be used as metakey on the output file.
 	 * @param doCHV if <code>true</code> CHV query expansion is performed.
 	 * @throws Exception If the CHV file isn't found of if there's a fault while reading the index.
 	 */
@@ -83,6 +84,7 @@ public class ModifiedTerrier {
 	/**
 	 * Runs the read queries on the index without expanding them.
 	 * @param outputFile Path to the output results file.
+	 * @param useDocnoAsMeta if the document name should be used as metakey on the output file.
 	 * @param doCHV if <code>true</code> CHV query expansion is performed.
 	 * @throws Exception If there's a fault while reading the index.
 	 */

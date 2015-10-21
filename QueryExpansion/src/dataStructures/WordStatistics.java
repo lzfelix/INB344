@@ -1,7 +1,7 @@
 package dataStructures;
 
 /**
- * Workout class, as Java doesn't have Pairs<> by default. This is used to
+ * Workout class, as Java doesn't have Pair by default. This is used to
  * store related words frequency in a unique way and order them.
  * @author Luiz Ribeiro
  */

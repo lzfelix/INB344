@@ -36,6 +36,7 @@ public class EMIMQueryExpansion {
 	
 	/**
 	 * Creates a new Query Expansion object
+	 * @param index the Terrier index.
 	 */
 	public EMIMQueryExpansion(Index index) {
 		this.index = index;
@@ -51,8 +52,9 @@ public class EMIMQueryExpansion {
 	 * least <code>RARE_THRESHOLD</code> documents but also has corpus frequency < <code>POPULAR_THRESHOLD</code>.
 	 * Words with numbers aren't expanded either.
 	 * @param word The query term to be expanded
-	 * @return A list with the top <code>maxTranslations</code> likely translations for <code>word<code>. If it's not
+	 * @return A list with the top <code>maxTranslations</code> likely translations for <code>word</code>. If it's not
 	 * possible to translate this word, then this list is empty.
+	 * @param maxTranslations the maximum amount of translations that this method should return for this word.
 	 * @throws IOException if there's an IO fault while reading the index files.
 	 */
 	public List<String> getTranslations(String word, int maxTranslations) throws IOException {		
