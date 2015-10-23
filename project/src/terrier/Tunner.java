@@ -12,6 +12,11 @@ import org.terrier.structures.postings.IterablePosting;
 
 import dataStructures.Pair;
 
+/**
+ * This class determined the best mu for the collection using the formulas described
+ * on the reference paper.
+ * @author Luiz Felix
+ */
 public class Tunner {
 	// the maximum of iterations performed by Newton's Method
 	public final int MAX_ITERATIONS = 40000;
