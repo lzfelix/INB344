@@ -4,4 +4,4 @@
 /corpus2/
 /corpus_annotated/
 .DS_Store
-temp/*
+project/tools/results/**

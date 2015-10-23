@@ -1,0 +1,66 @@
+1 red mark leg travel unit state
+2 lump blood spot nose rash exanthema
+3 dry red scali feet children indium foot
+4 itchi lump skin pruritu itch antihistamin
+5 whistl nois cough sleep children
+6 child hiss sound breath hospit system respir
+7 rosacea symptom acn dermat psoriasi
+8 cloudi cornea vision problem outer coat eyebal steril
+9 red itchi ey pruritu itch
+10 crater type bite mark wound
+11 white patchi mouth caucasian race
+12 babi dry cough problem swallow saliva infant
+13 cloudi pupil affect vision ey steril
+14 infant difficulti breath short dyspnea respir
+15 asthma attack allergi stroke allerg death
+16 red patchi bruis leg contus
+17 scali rash exanthema scalp setid dermat
+18 poor gait balanc shake tremor equilibrium
+19 bruis thumb nail contus structur plate
+20 movement difficulti involuntari hand trembl bodi muscl
+21 common itchi skin rash pruritu
+22 yellow thick ey leakag extravas setid
+23 red bloodshot ey rxnorm
+24 yellow gunk come ey itchi pruritu itch
+25 red rash babi face exanthema infant
+26 rais red lump skin awar rxnorm
+27 return oversea mean spot leg rash exanthema
+28 babi skin fungal infant birth bacteri
+29 red patch skin blister dry pu bulla rxnorm
+30 weird sound breath respir
+31 toddler squeaki breath babycent short
+32 red irrit skin babi face infant rxnorm
+33 white infect pharynx pharyng structur throat
+34 caviti problem dental cari tooth fluid teeth
+35 irrit contact lens len
+36 ey shake tremor bethesda setid
+37 scali skin scalp dermat red dry
+38 scali red itchi feet children pruritu itch
+39 skin eczema blister white pu bulla caucasian
+40 babi red blotch face infant birth
+41 ey iri larg bethesda vision
+42 patchi bleed skin hemorrhag scalp
+43 itchi rais bump skin pruritu itch
+44 nail dark plate hair light
+45 dry feel irrit emot setid
+46 babi cough infant birth fever
+47 caviti fluid teeth abdomin tube fluorid dental
+48 move ey medic condit sai
+49 babi breath mouth close respir infant
+50 red spot babi face infant rxnorm
+51 ey red blood vessel
+52 white spot gum gingiva caucasian
+53 swollen leg swell muscl red
+54 red lump nose rxnorm breast
+55 crate type mark skin indium editor
+56 slouch walk scrum go slammer
+57 infant labor breath tight wheez cough respir
+58 39 degre chicken pox chickenpox
+59 heavi squeaki breath down short
+60 babi white dot iri caucasian race
+61 fingernail bruis contus toenail bleed
+63 crusti skin patch red transderm scalp
+64 involuntari rapid left right ey motion movement contraind
+65 weird brown patch skin didn charl
+66 treatment cough babi indium
+67 black tooth race white teeth higher

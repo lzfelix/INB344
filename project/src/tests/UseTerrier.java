@@ -19,7 +19,7 @@ public class UseTerrier {
 	private static String RESULTS_FILE_PATH = "tools/output.txt";
 	
 	/* where to save the expanded queries -- if the case */
-	private static String EXPANDED_QUERIES_PATH = "tools/clef_lnqueries.txt";
+	private static String EXPANDED_QUERIES_PATH = "tools/clef_queries.txt";
 	
 	private static String QUERIES_PATH = "tools/clef_queries.txt";
 	
@@ -39,12 +39,14 @@ public class UseTerrier {
 //			System.out.println(terrier.getInternalMu());
 			
 			/* Reding queries from disk */
+			terrier.setInternalMu(303);
+			terrier.setInternalLambda(0.0);
 			terrier.readQueries(QUERIES_PATH);
 			
 			/* Now you can perform retrieval with the original queries, expand them and the perform retrieval 
 			 * or just save the expanded queries */
 //			terrier.writeExpandedQueries(EXPANDED_QUERIES_PATH, false);
-//			terrier.performQueriesWithStagedExpansion(RESULTS_FILE_PATH);
+//			terrier.performQueriesWithStagedExpansion(RESULTS_FILE_PATH, true, true);
 			terrier.performQueriesWithoutExpansion(RESULTS_FILE_PATH, true, true);
 		}
 		catch (Exception e) {

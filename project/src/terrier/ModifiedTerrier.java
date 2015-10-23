@@ -115,6 +115,14 @@ public class ModifiedTerrier {
 		DJM.getInstance().setMu(mu);
 	}
 	
+	public void setInternalLambda(double lambda) {
+		DJM.getInstance().setLambda(lambda);
+	}
+	
+	public void setInternalMu(double mu) {
+		DJM.getInstance().setMu(mu);
+	}
+	
 	/**
 	 * Returns the current value of mu used by DJM in order to score the documents.
 	 * @return Returns the current value of mu used by DJM in order to score the documents.

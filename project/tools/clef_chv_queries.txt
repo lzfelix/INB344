@@ -1,0 +1,66 @@
+1 red mark leg travel unit state
+2 lump blood spot nose rash exanthema
+3 dry red scali feet children indium foot pe child
+4 itchi lump skin pruritu itch
+5 whistl nois cough sleep children child
+6 child hiss sound breath hospit system respir  physic agent
+7 rosacea symptom acn
+8 cloudi cornea vision problem outer coat eyebal
+9 red itchi ey pruritu itch
+10 crater type bite mark wound
+11 white patchi mouth caucasian race indium
+12 babi dry cough problem swallow saliva infant
+13 cloudi pupil affect vision ey
+14 infant difficulti breath short dyspnea respir
+15 asthma attack
+16 red patchi bruis leg contus
+17 scali rash exanthema
+18 poor gait balanc shake tremor equilibrium
+19 bruis thumb nail contus structur plate
+20 movement difficulti involuntari hand trembl bodi
+21 common itchi skin rash pruritu exanthema itch
+22 yellow thick ey leakag extravas
+23 red bloodshot ey
+24 yellow gunk come ey itchi pruritu itch
+25 red rash babi face exanthema infant
+26 rais red lump skin
+27 return oversea mean spot leg rash exanthema
+28 babi skin fungal infant
+29 red patch skin blister dry pu bulla
+30 weird sound breath respir  physic agent
+31 toddler squeaki breath
+32 red irrit skin babi face infant
+33 white infect pharynx pharyng structur throat caucasian race
+34 caviti problem dental cari tooth
+35 irrit contact lens len
+36 ey shake tremor
+37 scali skin
+38 scali red itchi feet children pruritu itch indium foot
+39 skin eczema blister white pu bulla caucasian race
+40 babi red blotch face infant
+41 ey iri larg
+42 patchi bleed skin hemorrhag
+43 itchi rais bump skin pruritu itch
+44 nail dark plate
+45 dry feel irrit emot
+46 babi cough infant
+47 caviti
+48 move ey medic condit
+49 babi breath mouth close respir infant
+50 red spot babi face infant
+51 ey red blood vessel
+52 white spot gum gingiva caucasian race
+53 swollen leg swell
+54 red lump nose
+55 crate type mark skin indium
+56 slouch walk
+57 infant labor breath tight wheez cough respir
+58 39 degre chicken pox chickenpox
+59 heavi squeaki breath
+60 babi white dot iri caucasian race indium infant
+61 fingernail bruis contus
+63 crusti skin patch
+64 involuntari rapid left right ey motion
+65 weird brown patch skin
+66 treatment cough babi indium therapeut procedur infant
+67 black tooth race

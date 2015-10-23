@@ -7,7 +7,7 @@ if [ $1 == "-d" ]; then
     terrier_path="/Users/luiz/Desktop/SET/terrier-4.0/bin/"
     queries_file="/Users/luiz/Desktop/SET/terrier-4.0/queries/clef_queries.txt"
     index_path="/Users/luiz/Desktop/SET/terrier-4.0/corpus/clef/"
-    result_file="/Users/luiz/Desktop/wow/result.txt"
+    result_file="/Users/luiz/git/INB344/project/tools/output.txt"
     treceval_path="/Users/luiz/Desktop/SET/trec_eval.9.0/trec_eval"
     qrels_file="/Users/luiz/Desktop/SET/terrier-4.0/queries/clef_relevance.qrels"
     report_path="/Users/luiz/Desktop/wow/report.txt"

@@ -42,7 +42,11 @@ public class DJM {
 	public final String METHOD_NAME = "DJM";
 	
 	/* Used as a parameter when determining the amount of expansion for a given query */
-	public final double K = 6;
+	public final double R = 4;
+	public final int LONG_EXPANSION_MAX = 14;
+	public final int LONG_EXPANSION_MIN = 7;
+	public final int SHORT_EXPANSION_MAX = 10;
+	public final int SHORT_EXPANSION_MIN = 5;
 	
 	private PorterStemmer porterStemmer;
 	private Stopwords stopwords;
@@ -77,6 +81,8 @@ public class DJM {
 	 * @throws IOException If there's any I/O fault while reading the index.
 	 */
 	public Request queryCorpus(String query, Index index) throws IOException {
+		System.out.println(this.lambda);
+		
 		CollectionStatistics statistics = index.getCollectionStatistics();
 		
 		int  D = statistics.getNumberOfDocuments();			//corpus size
@@ -119,10 +125,10 @@ public class DJM {
 				// double c_w_d = postingsList.getFrequency() / (double)postingsList.getDocumentLength();
 				
 				
-				double dirichlet = WeightingModelLibrary.log(2 + (c_w_d + this.mu * p_w_c) / (double)(docLen + this.mu));
-				double jm = WeightingModelLibrary.log(2 + p_w_c);
+				double dirichlet = (c_w_d + this.mu * p_w_c) / (double)(docLen + this.mu);
+				double jm = p_w_c;
 				
-				logP_d_q[docId] += (1 - this.lambda) * dirichlet + this.lambda * jm;
+				logP_d_q[docId] += WeightingModelLibrary.log((1 - this.lambda) * dirichlet + this.lambda * jm + 2);
 			}
 		}	
 		
@@ -140,14 +146,39 @@ public class DJM {
 	}
 
 	/**
-	 * The policy to expand a query. It sets the amount of expansions according to
-	 * the query length. Long queries are allowed to less expansions than shorter ones.
+	 * The log policy to expand a query. It determines the amount of extra terms by
+	 * using the formula round(1/Ln(amount_of_words_on_query + 1) * R). 
 	 * @param query the input query 
 	 * @return the amount of words allows to expand <code>query</code>
 	 */
-	private int expandingFactor(String query) {		 
-		return (int)Math.round(1/Math.log(query.length()) * K);
+	private int logExpandingFactor(String query) { 
+		return (int)Math.round(1/Math.log(query.split(" ").length + 1) * R);
 	}
+	
+	/**
+	 * An expansion policy that allows many expansions. The amount of expansions
+	 * is determined according to the formula: max(LONG_EXPANSION_MIN, LONG_EXPANSION_MAX - 
+	 * (amount_of_words_on_query)). 
+	 * @param query the input query 
+	 * @return the amount of words allows to expand <code>query</code>
+	 */
+	private int longExpandingFactor(String query) {
+		int a = LONG_EXPANSION_MAX - query.split(" ").length;
+		int b = LONG_EXPANSION_MIN;
+		
+		return Math.max(b, a);
+	}
+	
+	/**
+	 * An expansion policy that allows some expansions. The amount of expansions
+	 * is determined according to the formula: max(SHORT_EXPANSION_MIN, SHORT_EXPANSION_MAX - 
+	 * (amount_of_words_on_query)). 
+	 * @param query the input query 
+	 * @return the amount of words allows to expand <code>query</code>
+	 */
+	private int shortExpandingFactor(String query) {
+		return Math.max(SHORT_EXPANSION_MIN, SHORT_EXPANSION_MAX - query.split(" ").length);
+	} 
 	
 	/**
 	 * Performs a set of queries, stored in a <code>HashMap<Key, Query></code> pair on the corpus. After each query is performed,
@@ -167,6 +198,8 @@ public class DJM {
 			boolean useDocnoAsMeta, boolean CHVOnly) throws Exception {
 		// this is responsible for organizing the ResultSets on the correct output format
 		
+		int amountOfExpansions = 0;
+		
 		if (useDocnoAsMeta)
 			ApplicationSetup.setProperty("trec.querying.outputformat.docno.meta.key", "filename");
 		
@@ -177,11 +210,15 @@ public class DJM {
 		for (Entry<String, String> query : queries.entrySet()) {
 			System.out.println("Processing query " + query.getKey());
 			
-			int amountOfExpansions = expandingFactor(query.getValue());
+			if (!query.getKey().equals("9")) continue;
+			
+//			int amountOfExpansions = logExpandingFactor(query.getValue());
 			
 			String expandedQuery;
-			if (queryExpansionPipeline != null)
+			if (queryExpansionPipeline != null) {
+				amountOfExpansions = longExpandingFactor(query.getValue());
 				expandedQuery = queryExpansionPipeline.expandQuery(query.getValue(), amountOfExpansions, CHVOnly);
+			}
 			else
 				expandedQuery = query.getValue();
 			
@@ -215,7 +252,7 @@ public class DJM {
 		for (Entry<String, String> query : queries.entrySet()) {
 			System.out.println("Expanding query " + query.getKey() + ": " + query.getValue());
 			
-			int amountOfExpansions = expandingFactor(query.getValue());
+			int amountOfExpansions = logExpandingFactor(query.getValue());
 			
 			System.out.println("Allowing " + amountOfExpansions);
 			

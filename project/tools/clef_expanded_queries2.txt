@@ -1,0 +1,66 @@
+1 red mark leg travel unit state rxnorm editor muscl biodel setid
+2 lump blood spot nose rash exanthema breast sure throat swell sai runni
+3 dry red scali feet children indium foot pe setid rxnorm scalp
+4 itchi lump skin pruritu itch antihistamin breast runni swell gland red cyst sneez
+5 whistl nois cough sleep children child sai hear fever babycent
+6 child hiss sound breath hospit system respir  physic agent sai short nois try
+7 rosacea symptom acn dermat psoriasi dermatolog dermatologist facial vivacar
+8 cloudi cornea vision problem outer coat eyebal steril corneal blur ey clear
+9 red itchi ey pruritu itch rxnorm antihistamin bethesda setid runni dailym
+10 crater type bite mark wound plasticart insect editor plasticweb bitten north bermant mosquito
+11 white patchi mouth caucasian race indium excret scalp dry precaut regrowth vomit pharmacolog
+12 babi dry cough problem swallow saliva infant birth setid fever pregnant
+13 cloudi pupil affect vision ey steril dilat blur clear caution dizzi
+14 infant difficulti breath short dyspnea respir mother depress pediatr impair chest milk reaction
+15 asthma attack allergi stroke allerg death rhiniti pressur respiratori myocardi allergist infarct urticaria short
+16 red patchi bruis leg contus rxnorm scalp bleed muscl setid regrowth swell
+17 scali rash exanthema scalp setid dermat rxnorm red dailym dry lookup psoriasi cfm patch
+18 poor gait balanc shake tremor equilibrium higher amount setid death ataxia
+19 bruis thumb nail contus structur plate bleed finger hair swell hand craze injuri
+20 movement difficulti involuntari hand trembl bodi muscl depress awai smother brain impair
+21 common itchi skin rash pruritu exanthema itch antihistamin setid runni rxnorm dailym
+22 yellow thick ey leakag extravas setid layer bethesda leak rxnorm thin incontin dailym
+23 red bloodshot ey rxnorm bethesda setid dailym lookup cfm
+24 yellow gunk come ey itchi pruritu itch setid bethesda antihistamin rxnorm
+25 red rash babi face exanthema infant rxnorm setid birth told pregnant pass
+26 rais red lump skin awar rxnorm breast sai setid swell littl dailym gland higher
+27 return oversea mean spot leg rash exanthema cart abroad sure muscl shop
+28 babi skin fungal infant birth bacteri pregnant antifung toddler fungi newborn candida breastfeed viral
+29 red patch skin blister dry pu bulla rxnorm transderm rash setid si
+30 weird sound breath respir  physic agent didn sai short go try chest
+31 toddler squeaki breath babycent short potti chest shortcut lung babi pressur ovul cough
+32 red irrit skin babi face infant rxnorm setid birth told
+33 white infect pharynx pharyng structur throat caucasian race indium excret larynx precaut pharmacolog
+34 caviti problem dental cari tooth fluid teeth abdomin tube fluorid periton
+35 irrit contact lens len setid ey rxnorm intraocular dailym visioncar
+36 ey shake tremor bethesda setid rxnorm dailym lookup javascript cfm
+37 scali skin scalp dermat red dry psoriasi patch rash itchi
+38 scali red itchi feet children pruritu itch indium foot scalp rxnorm antihistamin
+39 skin eczema blister white pu bulla caucasian race psoriasi rash excret vitiligo
+40 babi red blotch face infant birth rxnorm told pregnant setid pass toddler dailym
+41 ey iri larg bethesda vision setid glaucoma rxnorm intraocular dailym nonanaphylact javascript angleclosur
+42 patchi bleed skin hemorrhag scalp reaction regrowth aspirin regrow gastrointestin minoxidil abnorm hair
+43 itchi rais bump skin pruritu itch antihistamin awar mum runni sai babi littl
+44 nail dark plate hair light craze red shocker ey emedicinehealth color bootswebmd amount
+45 dry feel irrit emot setid rxnorm dailym lookup cfm
+46 babi cough infant birth fever pregnant respiratori toddler throat newborn cold breastfeed breath
+47 caviti fluid teeth abdomin tube fluorid dental periton toothpast surgic anticav brush wall abdomen
+48 move ey medic condit sai bethesda down setid try rxnorm
+49 babi breath mouth close respir infant birth short dry pregnant chest vomit
+50 red spot babi face infant rxnorm sure birth told setid sai pregnant pass dailym
+51 ey red blood vessel bethesda rxnorm arteri setid flow
+52 white spot gum gingiva caucasian race excret sure xanthan precaut sai setid
+53 swollen leg swell muscl red chest inflamm arm fluid pelvi gland abdomen inflam
+54 red lump nose rxnorm breast throat setid swell runni dailym gland ear lookup
+55 crate type mark skin indium editor north
+56 slouch walk scrum go slammer put pusher down stretcher went shove try cricket
+57 infant labor breath tight wheez cough respir mother deliveri short dispens
+58 39 degre chicken pox chickenpox concentr metformin impair insulin rey observ
+59 heavi squeaki breath down short amount chest especi lung drink pressur half cough
+60 babi white dot iri caucasian race indium infant birth excret blank vision pregnant
+61 fingernail bruis contus toenail bleed nail swell finger injuri fungal muscl onychomycosi leg
+63 crusti skin patch red transderm scalp nicotin delici irrit scali quit itchi hair flaki
+64 involuntari rapid left right ey motion movement contraind ventricular bethesda joint muscl dosag down
+65 weird brown patch skin didn charl transderm go michael nicotin sai king irrit
+66 treatment cough babi indium therapeut procedur infant fever birth respiratori pregnant throat
+67 black tooth race white teeth higher dental half gum reaction decai observ mouth yellow

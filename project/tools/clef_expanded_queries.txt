@@ -1,0 +1,66 @@
+1 red mark leg travel unit state rxnorm editor muscl
+2 lump blood spot nose rash exanthema breast sure swell
+3 dry red scali feet children indium foot setid rxnorm scalp
+4 itchi lump skin pruritu itch antihistamin breast runni swell
+5 whistl nois cough sleep children sai hear fever
+6 child hiss sound breath hospit system respir sai nois
+7 rosacea symptom acn dermat psoriasi dermatolog dermatologist
+8 cloudi cornea vision problem outer coat eyebal steril corneal blur ey
+9 red itchi ey pruritu itch rxnorm antihistamin bethesda setid
+10 crater type bite mark wound plasticart insect editor plasticweb
+11 white patchi mouth caucasian race indium excret scalp dry
+12 babi dry cough problem swallow saliva infant birth setid fever
+13 cloudi pupil affect vision ey steril dilat blur
+14 infant difficulti breath short dyspnea respir mother depress pediatr
+15 asthma attack allergi stroke allerg death rhiniti pressur respiratori myocardi
+16 red patchi bruis leg contus rxnorm scalp bleed
+17 scali rash exanthema scalp setid dermat rxnorm red dailym dry
+18 poor gait balanc shake tremor equilibrium higher amount
+19 bruis thumb nail contus structur plate bleed finger hair swell
+20 movement difficulti involuntari hand trembl bodi muscl depress awai
+21 common itchi skin rash pruritu exanthema antihistamin runni
+22 yellow thick ey leakag extravas setid layer bethesda leak rxnorm
+23 red bloodshot ey rxnorm bethesda setid dailym
+24 yellow gunk come ey itchi pruritu itch setid rxnorm
+25 red rash babi face exanthema infant rxnorm setid birth told
+26 rais red lump skin awar rxnorm breast sai setid swell
+27 return oversea mean spot leg rash exanthema cart abroad shop
+28 babi skin fungal infant birth bacteri pregnant antifung toddler fungi
+29 red patch skin blister dry pu bulla rxnorm transderm rash setid
+30 weird sound breath respir  physic agent didn sai short
+31 toddler squeaki breath babycent short potti chest shortcut lung
+32 red irrit skin babi face infant rxnorm setid birth
+33 white infect pharynx pharyng structur throat caucasian excret larynx precaut
+34 caviti problem dental cari tooth fluid teeth abdomin tube fluorid
+35 irrit contact lens len setid ey rxnorm
+36 ey shake tremor bethesda setid rxnorm dailym
+37 scali skin scalp dermat red dry psoriasi patch
+38 scali red itchi feet children pruritu itch scalp rxnorm antihistamin
+39 skin eczema blister white pu bulla caucasian psoriasi rash vitiligo
+40 babi red blotch face infant birth rxnorm told pregnant
+41 ey iri larg bethesda vision setid glaucoma rxnorm intraocular
+42 patchi bleed skin hemorrhag scalp reaction regrowth aspirin regrow
+43 itchi rais bump skin pruritu itch antihistamin awar mum runni
+44 nail dark plate hair light craze red shocker ey
+45 dry feel irrit emot setid rxnorm dailym
+46 babi cough infant birth fever pregnant respiratori toddler throat
+47 caviti fluid teeth abdomin tube fluorid dental periton toothpast surgic
+48 move ey medic condit sai bethesda down setid
+49 babi breath mouth close respir infant birth short dry
+50 red spot babi face infant rxnorm sure birth told setid
+51 ey red blood vessel bethesda rxnorm setid
+52 white spot gum gingiva caucasian race excret sure xanthan
+53 swollen leg swell muscl red chest inflamm arm fluid
+54 red lump nose rxnorm breast throat setid swell runni
+55 crate type mark skin indium editor
+56 slouch walk scrum go slammer put pusher down stretcher
+57 infant labor breath tight wheez cough respir mother deliveri short
+58 39 degre chicken pox chickenpox concentr metformin impair
+59 heavi squeaki breath down short amount chest especi lung
+60 babi white dot iri caucasian race birth excret blank
+61 fingernail bruis contus toenail bleed nail swell finger injuri
+63 crusti skin patch red transderm scalp nicotin delici irrit scali
+64 involuntari rapid left right ey motion movement contraind ventricular bethesda muscl
+65 weird brown patch skin didn charl transderm go michael
+66 treatment cough babi indium fever birth respiratori
+67 black tooth race white teeth higher dental half gum reaction
