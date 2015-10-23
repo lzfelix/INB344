@@ -1,6 +1,6 @@
 # CLEF Health 2015
 
-*This folder contains all the code developed while working on the assignment. You can find more details on the report, on ```report/```, while all the developed code is on  divided across the folders, the section "Organisation" details how they are distributed. This readme just discusses how to install and use the project, it doesn't discusses technical aspects related to IR. For this kind of information, please refer to the report.*
+*This folder contains all the code developed while working on the assignment. You can find more details on the report, on ```report/```, while all the developed code is on  divided across the other folders, the section "Organisation" details how they are distributed. This readme just discusses how to install and use the project, it doesn't discusses technical aspects related to IR. For this kind of information, please refer to the report (or the slides [to be added]).*
 
 ## Organisation
 
