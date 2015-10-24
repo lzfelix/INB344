@@ -39,7 +39,7 @@ The developed Java code can be seen as a framework that allows different course 
 * Expand based only on CHV or using both CHV and EMIM
 * Save the expanded queries
 * Run the whole pipeline and perform retrieval using either Dirichlet, Jelinek-Mercer or Two-Stage Language Smoothing techniques
-* Set values for λ and μ manuallu
+* Set values for λ and μ manually
 * Tune μ according to the corpus
 
 For detailed informatino about how to use the code, refer to ```doc/```
